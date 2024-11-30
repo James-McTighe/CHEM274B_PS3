@@ -56,7 +56,7 @@ class Solution:
 
     def is_cyclic_util(self, graph : Graph, v, visited : list, parent):
         visited[v] = True
-        for x in graph.graph[v]:
+        for x, weight in graph.graph[v]:
             if not visited[x]:
                 if self.is_cyclic_util(graph, x, visited, v):
                     return True

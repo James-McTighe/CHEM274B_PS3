@@ -55,13 +55,22 @@ class Solution:
 
 
     def is_cyclic_util(self, graph : Graph, v, visited : list, parent):
-        # TODO: Implement
-        pass
+        visited[v] = True
+        for neighbor, _ in graph.graph[v]:
+            if not visited[neighbor]:
+                if self.is_cyclic_util(graph, neighbor, visited, v):
+                    return True
+            elif parent != neighbor:
+                return True
+        return False
 
-    def is_cyclic(self, graph : Graph):
-        # TODO: Implement
-        pass
+    def is_cyclic(self, graph : Graph) -> bool:
+        visited = [False] * graph.V
+        for i in range(graph.V):
+            if not visited[i]:
+                if self.is_cyclic_util(graph, i, visited, -1):
+                    return True
+        return False
 
     def detect_deadlock(self, graph : Graph):
-        # TODO: Implement
-        pass
+        return self.is_cyclic(graph)

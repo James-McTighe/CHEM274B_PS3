@@ -56,11 +56,11 @@ class Solution:
 
     def is_cyclic_util(self, graph : Graph, v, visited : list, parent):
         visited[v] = True
-        for neighbor, _ in graph.graph[v]:
-            if not visited[neighbor]:
-                if self.is_cyclic_util(graph, neighbor, visited, v):
+        for x in graph.graph[v]:
+            if not visited[x]:
+                if self.is_cyclic_util(graph, x, visited, v):
                     return True
-            elif parent != neighbor:
+            elif parent != x:
                 return True
         return False
 

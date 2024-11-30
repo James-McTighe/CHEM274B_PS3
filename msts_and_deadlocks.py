@@ -39,32 +39,49 @@ class Solution:
 
         for u in range(graph.V):
             for v, weight in graph.graph[u]:
-                if u < v:  # Avoid duplicating edges
-                    edges.append((weight, u, v))
+                if u != v:  # Avoid duplicating edges
+                    edges.append((u, v, weight))
 
-        edges.sort()
+        edges.sort(key=lambda item: item[2]) #sorts the edges by their weight
 
         min_span_tree = []
 
-        for weight, u, v in edges:
-            if uf.find(u) != uf.find(v):
-                uf.union(u,v)
-                min_span_tree.append((u, v, weight))
+        for u, v, weight in edges:
+            if uf.find(u) != uf.find(v): # evaluates if the two nodes are connected in the same tree
+                uf.union(u,v) # connects the nodes if they aren't already
+                min_span_tree.append((u, v, weight)) # appends edge to result
+                # This will prevent cyclical MSTs
 
         return min_span_tree
 
 
     def is_cyclic_util(self, graph : Graph, v, visited : list, parent):
+        """
+        This function is used to aid in the implementation of the below function.
+        As the other function is working through each node, this function marks the node as visited.
+        It will then determin if a cycle is present by iterating through all connected nodes.
+        If it is able to go through all nodes without revisiting one, no cycle will be found and the function will return 'False'
+        """
         visited[v] = True
-        for x, weight in graph.graph[v]:
-            if not visited[x]:
+        for x, weight in graph.graph[v]: # weight isn't used, it's just need to extract x from the graph, can't perform these operations with a tuple
+            
+            if not visited[x]: #recursivly calls nodes connected to v which haven't been visited using DFS
                 if self.is_cyclic_util(graph, x, visited, v):
                     return True
-            elif parent != x:
+                
+            elif parent != x: # this means that the two nodes aren't a part of the same tree so a cycle would be impossible.
                 return True
+
         return False
 
     def is_cyclic(self, graph : Graph) -> bool:
+        """
+        This function creates a list of nodes all marked 'False'
+        It iterates through each node and detects if there is a cycle present anywhere in it's connected vertices
+        If there is a cycle present it will return 'True'
+        Otherwise the function will return 'False'
+        """
+
         visited = [False] * graph.V
         for i in range(graph.V):
             if not visited[i]:

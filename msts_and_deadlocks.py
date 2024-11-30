@@ -1,9 +1,13 @@
 class Graph:
     def __init__(self, vertices):
         self.V = vertices
-        self.graph = [[] for _ in range(vertices)]
+        self.graph = [[] for _ in range(vertices)] # this will end up being a list of lists, each index will be [u, (v, weight)]
     
     def add_edge(self, u, v, weight):
+        """
+        Edges are represented by having a tuple with the connected node and it's associated weight
+        connected at the same index of the node
+        """
         self.graph[u].append((v, weight))
         self.graph[v].append((u, weight))
 
@@ -29,18 +33,35 @@ class DisjointSet:
             self.rank[xroot] += 1
 
 class Solution:
-    def kruskal_mst(self, graph):
+    def kruskal_mst(self, graph : Graph):
+        edges = []
+        uf = DisjointSet(graph.V)
+
+        for u in range(graph.V):
+            for v, weight in graph.graph[u]:
+                if u < v:  # Avoid duplicating edges
+                    edges.append((weight, u, v))
+
+        edges.sort()
+
+        min_span_tree = []
+
+        for weight, u, v in edges:
+            if uf.find(u) != uf.find(v):
+                uf.union(u,v)
+                min_span_tree.append(u, v, weight)
+
+        return min_span_tree
+
+
+    def is_cyclic_util(self, graph : Graph, v, visited : list, parent):
         # TODO: Implement
         pass
 
-    def is_cyclic_util(self, graph, v, visited, parent):
+    def is_cyclic(self, graph : Graph):
         # TODO: Implement
         pass
 
-    def is_cyclic(self, graph):
-        # TODO: Implement
-        pass
-
-    def detect_deadlock(self, graph):
+    def detect_deadlock(self, graph : Graph):
         # TODO: Implement
         pass

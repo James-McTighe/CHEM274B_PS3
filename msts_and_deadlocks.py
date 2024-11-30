@@ -49,7 +49,7 @@ class Solution:
         for weight, u, v in edges:
             if uf.find(u) != uf.find(v):
                 uf.union(u,v)
-                min_span_tree.append(u, v, weight)
+                min_span_tree.append((u, v, weight))
 
         return min_span_tree
 

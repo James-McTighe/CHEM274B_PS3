@@ -34,6 +34,15 @@ class DisjointSet:
 
 class Solution:
     def kruskal_mst(self, graph : Graph):
+        """
+        This function returns a list of edges contained within the MST.
+        The basis by which this works is using a union-find structure.
+        If two nodes don't share a parent, they'll be connected.
+        The edges are sorted by their weight so they are added to the mst from smallest to largest
+        The structure of the Graph object helps to implement this.
+        Because the first for loop is graph.V, the number of edges added to the MST will only be V-1
+        """
+
         edges = []
         uf = DisjointSet(graph.V)
 
